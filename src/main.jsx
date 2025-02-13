@@ -7,16 +7,14 @@ import Signup from './pages/Signup.jsx'
 import Home from './pages/Home.jsx'
 import Layout from './Layout.jsx'
 import ProtectedRoute from '../components/protactedrout.jsx'
-
-
 const router = createBrowserRouter([
   {
     path: "",
     element: <Layout />,
     children: [
       {
-        path: "/",
-        element: <Login />
+        path: "/",  
+        element: <Login />  
       },
       {
         path: "signup",
@@ -24,9 +22,8 @@ const router = createBrowserRouter([
       },
       {
         path: "home",
-        element: <ProtectedRoute component={<Home/>}/>
+        element: <ProtectedRoute component={<Home />} />  
       },
-
     ]
   },
 ])

@@ -4,6 +4,7 @@ import axiosInstance from "../../components/middaleware";
 
 const Signup = () => {
     const [profilePic , setProfilePic] = useState()
+    const [imageName , setImageName] = useState()
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -56,8 +57,10 @@ const Signup = () => {
 
     }, (error, result) => {
         if (!error && result && result.event === "success") {
-            console.log('Done! Here is the image info: ', result.info.url);
+            console.log('Done! Here is the image info: ', result.info.path
+            );
             setProfilePic(result.info.url)
+            setImageName(result.info.path)
         }
     })
 
@@ -110,6 +113,7 @@ const Signup = () => {
                     </div>
                     <div className="mb-4">
                         <span className="btn" onClick={()=> myWidget.open()}>Upload your photo</span>
+                        <span className="ms-2">{imageName}</span>
                     </div>
 
                     <button type="submit" className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"> Sign up </button>

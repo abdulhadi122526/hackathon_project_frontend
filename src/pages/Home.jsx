@@ -55,6 +55,7 @@ const Home = () => {
         uploadImage,
       })
       console.log(response.data);
+      localStorage.removeItem("upload_image")
     } catch (error) {
       console.log("creat post fiels ==>", error.response ? error.response.data : error.message);
     }
@@ -72,7 +73,7 @@ const Home = () => {
 
   }, (error, result) => {
     if (!error && result && result.event === "success") {
-      console.log('Done! Here is the image info: ', result.info.url);
+      console.log('Done! Here is the image info: ', result.info);
       setUploadImage(result.info.url)
       localStorage.setItem("upload_image", result.info.url)
     }
@@ -147,12 +148,12 @@ const Home = () => {
     <>
       {/* post uploading */}
       <div className="min-h-screen bg-gray-100 flex justify-between">
-        <div className="w-64 bg-white shadow-lg fixed left-0 top-0 h-full ms-2 mt-18 rounded-lg">
+        <div className="w-72 bg-white shadow-lg fixed left-0 top-0 h-full ms-2 mt-18 rounded-lg">
           <LeftSidebar />
         </div>
 
 
-        <div className="flex-1 pt-20 bg-gray-100 pb-10 mx-auto max-w-2xl px-4 ">
+        <div className="flex-1 pt-20 bg-gray-100 pb-10 mx-auto max-w-xl px-4 ">
           <div className="max-w-2xl mx-auto  bg-white p-6 rounded-lg shadow-lg mb-12 ">
             <form onSubmit={handleSubmit}>
               {/* Content Field */}
@@ -174,6 +175,10 @@ const Home = () => {
               </div>
 
               {/* Buttons Section */}
+              <div>
+                {localStorage.getItem('upload_image') && <img src={localStorage.getItem("upload_image")} alt="uploaded pic" width='200px' height='200px' className="rounded-md" />}
+                
+              </div>
               <div className="flex items-center justify-between mt-4 ms-5">
                 <div className="flex gap-6 text-gray-500">
                   <button className="flex items-center gap-2 hover:cursor-pointer">
@@ -198,7 +203,7 @@ const Home = () => {
 
           {/* posts rendering */}
 
-          {data && data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((item) => {
+          {data && data?.filter((item) => item.user && item.user._id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((item) => {
             return (
               <div key={item._id} className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg mb-6 relative">
                 {/* delete post */}
@@ -216,8 +221,8 @@ const Home = () => {
                   /> : <FaUser className="w-12 h-12 rounded-full text-gray-400 object-cover me-2 shadow-md border border-gray-500" />}
 
                   <div>
-                    <p className="font-semibold text-gray-800">{item.user.username}</p>
-                    <p className="text-gray-500 text-sm">{item.createdAt}</p>
+                    <p className="font-semibold text-gray-800">{item.user.username && item.user.username}</p>
+                    <p className="text-gray-500 text-sm">{item.createdAt && item.createdAt}</p>
                   </div>
                 </div>
                 <h2 className="text-xl font-bold text-gray-800 mb-4">{item.title}</h2>
@@ -339,8 +344,8 @@ const Home = () => {
           })}
 
         </div>
-        <div className="w-64 bg-white shadow-lg fixed h-full right-6 top-0 me-2 mt-18 rounded-lg">
-          <RightSidebar/>
+        <div className="w-72 bg-white shadow-lg fixed right-0 top-0 h-full  mt-18 rounded-lg">
+          <RightSidebar />
         </div>
       </div>
 

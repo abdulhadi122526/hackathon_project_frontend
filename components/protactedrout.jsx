@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 const ProtectedRoute = ({ component }) => {
   const [user, setUser] = useState(false)
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const checkToken = localStorage.getItem("access_token");
     if (checkToken) {
       setUser(true)
-      return
+      navigate('/home')
+    }else{
+      setUser(false)
+      navigate("/")
+      
     }
-    navigate("/")
   }, [])
 
 
